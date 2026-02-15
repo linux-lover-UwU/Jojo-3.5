@@ -1,0 +1,42 @@
+[
+        {
+                "button":
+                [
+                        {
+                                "x":0,
+                                "y":0,
+                                "text":"test"
+                        }
+                ],
+                "selected":0,
+                "background":8,
+                "over":0
+        },
+        {
+                "text":
+                [
+                        {
+                                "x":100,
+                                "y":50,
+                                "text":"game over"
+                        }
+                ],
+                "button":
+                [
+                        {
+                                "x":100,
+                                "y":100,
+                                "text":"continue"
+                        },
+                        {
+                                "x":100,
+                                "y":150,
+                                "text":"end"
+                        }
+                ],
+                "selected":0,
+                "background":8,
+                "over":0
+
+        }
+]
