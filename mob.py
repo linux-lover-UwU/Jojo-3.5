@@ -7,7 +7,9 @@ from ui import *
 class Mob_enum(IntEnum):
     JOTARO = 0
     PENGUIN = 1
-    PROJECTILE = 2
+    BAD_PROJECTILE = 2
+    PROJECTILE = 3
+    BAD_GUY = 4
 
 class Answer_action(IntEnum):
     FLIGHT_FIGHT = -1
@@ -39,11 +41,13 @@ def draw_mob(mob:dict, mob_type:Mob_enum)->None:
             h:int = global_variable.mob_attrib[mob_type]["animation"][mob["animation_index"]]["h"][i]
             break
 
-    pyxel.blt(mob["x"], mob["y"], mob_type, u, v, w, h)
+    pyxel.blt(mob["x"], mob["y"], 0, u, v, w, h)
 
-def talk(mob):
-    i = 0
+def talk(mob, dialogue_index):
+    print(mob , dialogue_index)
+    i = dialogue_index
     while i<len(mob["text"]):
+        print(i)
         ui:dict = {"button":[{"text":mob["answer"][i][j], "x":0, "y":200+6*j} for j in range(len(mob["answer"][i]))] + [{"x": 0, "y": 150,"text": mob["name"]},{"x": 10, "y":160 ,"text": mob["text"][i]}], "background": -1 ,"selected": 0, "over": False}
         while not pyxel.btnp(pyxel.KEY_A):
             if pyxel.btnp(pyxel.KEY_Z):

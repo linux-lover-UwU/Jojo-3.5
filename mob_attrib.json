@@ -34,5 +34,29 @@
                                 "image_count":1
                         }
                 ]
+        },
+        {
+                "animation" : [
+                        {
+                                "u":[0],
+                                "v":[32],
+                                "w":[8],
+                                "h":[16],
+                                "image_time":[1],
+                                "image_count":1
+                        }
+                ]
+        },
+        {
+                "animation" : [
+                        {
+                                "u":[0],
+                                "v":[0],
+                                "w":[30],
+                                "h":[30],
+                                "image_time":[1],
+                                "image_count":1
+                        }
+                ]
         }
 ]

@@ -1,4 +1,4 @@
-#!/bin/python 
+#!/bin/python
 
 import json
 import pyxel
@@ -33,7 +33,7 @@ global_variable.mob = [[create_mob(0,0,50,50)],[{
         "text":["hello","I ame mario"],
         "name":"mario",
         "answer":[["hello","non","hellololo"],["hellla"]],
-        "answer_action":[[Answer_action.KARAOKE,0,1],[0]]
+    "answer_action":[[Answer_action.FLIGHT_FIGHT,0,1],[0]]
     }]]
 
 tilemap_x:int = 0
@@ -63,7 +63,7 @@ def update():
                         if 10 > global_variable.mob[Mob_enum.JOTARO][0]["x"]-global_variable.mob[i][j]["x"] > -10:
                             global_variable.talking_png["i"] = i
                             global_variable.talking_png["j"] = j
-                            global_variable.state = talk(global_variable.mob[i][j])
+                            global_variable.state = talk(global_variable.mob[i][j], 0)
                             if(global_variable.state != Prog_state.IN_GAME):
                                 global_variable.update_global_variable()
 
@@ -88,21 +88,53 @@ def update():
             if pyxel.btn(pyxel.KEY_D):
                 movement_x = 1
 
-            if pyxel.btn(pyxel.KEY_O):
+            if pyxel.btn(pyxel.KEY_O) and global_variable.draw_loop_count%5 == 0:
                 global_variable.fight_mob[Mob_enum.PROJECTILE].append({"x":global_variable.fight_mob[Mob_enum.JOTARO][0]["x"], "y":global_variable.fight_mob[Mob_enum.JOTARO][0]["y"], "animation_start":0, "animation_index":0})
+
+
+
+            for i in global_variable.fight_mob[Mob_enum.BAD_GUY]:
+                if global_variable.draw_loop_count%10 == 0:
+                    global_variable.fight_mob[Mob_enum.BAD_PROJECTILE].append({"x":i["x"], "y":i["y"], "animation_start":0, "animation_index":0})
 
 
             global_variable.fight_mob[Mob_enum.JOTARO][0]["x"]+=movement_x
             global_variable.fight_mob[Mob_enum.JOTARO][0]["y"]+=movement_y
 
-            i:int = 0
-            while i<len(global_variable.fight_mob[Mob_enum.PROJECTILE]):
-                global_variable.fight_mob[Mob_enum.PROJECTILE][i]["x"]+=1
-                if(global_variable.fight_mob[Mob_enum.PROJECTILE][i]["x"] > 256):
-                    global_variable.fight_mob[Mob_enum.PROJECTILE][i] = global_variable.fight_mob[Mob_enum.PROJECTILE][len(global_variable.fight_mob[Mob_enum.PROJECTILE])-1]
+            projectile_index:int = 0
+            while projectile_index<len(global_variable.fight_mob[Mob_enum.PROJECTILE]):
+                for i in range(len(global_variable.fight_mob[Mob_enum.BAD_GUY])):
+                    print(global_variable.mob_attrib[Mob_enum.BAD_GUY])
+                    if(global_variable.fight_mob[Mob_enum.BAD_GUY][i]["y"]<global_variable.fight_mob[Mob_enum.PROJECTILE][projectile_index]["y"] and
+                        global_variable.fight_mob[Mob_enum.BAD_GUY][i]["y"] + global_variable.mob_attrib[Mob_enum.BAD_GUY]["animation"]["h"][0] > global_variable.fight_mob[Mob_enum.PROJECTILE][projectile_index]["y"] and
+                        global_variable.fight_mob[Mob_enum.BAD_GUY][i]["x"] > global_variable.fight_mob[Mob_enum.PROJECTILE][projectile_index]["x"]):
+                        global_variable.fight_mob[i][len(global_variable.fight_mob[i])]["y"] = global_variable.fight_mob[i][i]["y"]
+                        global_variable.fight_mob[i].remove(global_variable.fight_mob[i][len(global_variable.fight_mob[i])]["y"])
+
+                global_variable.fight_mob[Mob_enum.PROJECTILE][projectile_index]["x"]+=10
+                if(global_variable.fight_mob[Mob_enum.PROJECTILE][projectile_index]["x"] > 256):
+                    global_variable.fight_mob[Mob_enum.PROJECTILE][projectile_index] = global_variable.fight_mob[Mob_enum.PROJECTILE][len(global_variable.fight_mob[Mob_enum.PROJECTILE])-1]
                     global_variable.fight_mob[Mob_enum.PROJECTILE].remove(global_variable.fight_mob[Mob_enum.PROJECTILE][len(global_variable.fight_mob[Mob_enum.PROJECTILE])-1])
-                    i-=1
-                i+=1
+                    projectile_index-=1
+                projectile_index+=1
+
+
+            bad_projectile_index:int = 0
+            while bad_projectile_index<len(global_variable.fight_mob[Mob_enum.PROJECTILE]):
+                if(global_variable.fight_mob[Mob_enum.JOTARO][0]["y"]<global_variable.fight_mob[Mob_enum.PROJECTILE][bad_projectile_index]["y"] and
+                   global_variable.fight_mob[Mob_enum.JOTARO][0]["y"] + global_variable.mob_attrib[Mob_enum.JOTARO]["h"][0] > global_variable.fight_mob[Mob_enum.PROJECTILE][bad_projectile_index]["y"] and
+                   global_variable.fight_mob[Mob_enum.JOTARO][0]["x"] > global_variable.fight_mob[Mob_enum.PROJECTILE][bad_projectile_index]["x"]):
+                    global_variable.life -= 1
+
+                global_variable.fight_mob[Mob_enum.BAD_PROJECTILE][bad_projectile_index]["x"]+=10
+                if(global_variable.fight_mob[Mob_enum.BAD_PROJECTILE][bad_projectile_index]["x"] <0):
+                    global_variable.fight_mob[Mob_enum.BAD_PROJECTILE][bad_projectile_index] = global_variable.fight_mob[Mob_enum.PROJECTILE][len(global_variable.fight_mob[Mob_enum.PROJECTILE])-1]
+                    global_variable.fight_mob[Mob_enum.BAD_PROJECTILE].remove(global_variable.fight_mob[Mob_enum.BAD_PROJECTILE][len(global_variable.fight_mob[Mob_enum.BAD_PROJECTILE])-1])
+                    bad_projectile_index-=1
+                bad_projectile_index+=1
+
+                if global_variable.life <=0:
+                    global_variable.state = Prog_state.GAME_OVER
 
         case Prog_state.KARAOKE:
             if pyxel.btnp(translate_char(global_variable.karaoke_string[global_variable.karaoke_index])):
@@ -115,8 +147,7 @@ def update():
 
             if global_variable.karaoke_index == len(global_variable.karaoke_string):
                 global_variable.state = Prog_state.IN_GAME
-                talk(global_variable.mob[global_variable.talking_png["i"]][global_variable.talking_png["j"]])
-                mod_arg = True
+                talk(global_variable.mob[global_variable.talking_png["i"]][global_variable.talking_png["j"]], global_variable.karaoke_return)
 
             if global_variable.enemy_karaoke_index == len(global_variable.karaoke_string):
                 global_variable.state = Prog_state.GAME_OVER
@@ -152,7 +183,7 @@ def draw():
                     draw_mob(global_variable.fight_mob[i][j], i)
 
         case Prog_state.KARAOKE:
-            pyxel.cls(1)
+            pyxel.cls(8)
             pyxel.blt(10, 20, 2, global_variable.karaoke_pose*50, 50, 50, 50)
             pyxel.blt(150, 20, 2, global_variable.enemy_karaoke_pose*50, 50, 50, 50)
             pyxel.text(10, 80, global_variable.karaoke_string[global_variable.karaoke_index].upper(), 0)
