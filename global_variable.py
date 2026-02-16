@@ -2,16 +2,24 @@ import pyxel
 import json
 from prog_type import *
 
-draw_loop_count= 0
-mob_attrib= None
-ui_dict= None
-state= None
-mod_arg= None
-fight_coord= None
-fight_mob= None
+draw_loop_count = 0
+mob_attrib = None
+ui_dict = None
+state = None
+mod_arg = None
+fight_coord = None
+fight_mob = None
+karaoke_pose = 0
+enemy_karaoke_pose = 0
+karaoke_string = None
+karaoke_index = 0
+enemy_karaoke_index = 0
+talking_png = {"i":0, "j":0}
+mob = None
 
 def update_global_variable():
     global fight_mob
+    global karaoke_string
 
     match state:
         case Prog_state.END:
@@ -31,3 +39,9 @@ def update_global_variable():
             file_content = file.read()
             fight_mob = json.loads(file_content)[mod_arg]["mob"]
             print(fight_mob)
+
+        case Prog_state.KARAOKE:
+            file = open("karaoke.json", "r")
+            file_content = file.read()
+            karaoke_string = json.loads(file_content)[mod_arg]
+

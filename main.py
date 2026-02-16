@@ -25,7 +25,7 @@ pyxel.init(256, 224, title="Boomberman pyrate")
 
 pyxel.load("my_resource.pyxres")
 
-mob = [[create_mob(0,0,50,50)],[{
+global_variable.mob = [[create_mob(0,0,50,50)],[{
         "x":100,
         "y":100,
         "animation_index":0,
@@ -33,7 +33,7 @@ mob = [[create_mob(0,0,50,50)],[{
         "text":["hello","I ame mario"],
         "name":"mario",
         "answer":[["hello","non","hellololo"],["hellla"]],
-        "answer_action":[[Answer_action.FLIGHT_FIGHT,0,1],[0]]
+        "answer_action":[[Answer_action.KARAOKE,0,1],[0]]
     }]]
 
 tilemap_x:int = 0
@@ -41,6 +41,8 @@ tilemap_y:int = 0
 
 running:bool = True
 def update():
+    global global_variable
+
     movement_x:int = 0
     movement_y:int = 0
 
@@ -56,23 +58,24 @@ def update():
                 movement_x = 1
 
             if pyxel.btn(pyxel.KEY_E):
-                for i in range(1, len(mob)):
-                    for j in range(len(mob[i])):
-                        if 10 > mob[Mob_enum.JOTARO][0]["x"]-mob[i][j]["x"] > -10:
-                            global_variable.state = talk(mob[i][j])
+                for i in range(1, len(global_variable.mob)):
+                    for j in range(len(global_variable.mob[i])):
+                        if 10 > global_variable.mob[Mob_enum.JOTARO][0]["x"]-global_variable.mob[i][j]["x"] > -10:
+                            global_variable.talking_png["i"] = i
+                            global_variable.talking_png["j"] = j
+                            global_variable.state = talk(global_variable.mob[i][j])
                             if(global_variable.state != Prog_state.IN_GAME):
                                 global_variable.update_global_variable()
-                                print(global_variable.fight_mob)
 
 
-            mob[Mob_enum.JOTARO][0]["x"]+=movement_x
-            mob[Mob_enum.JOTARO][0]["y"]+=movement_y
+            global_variable.mob[Mob_enum.JOTARO][0]["x"]+=movement_x
+            global_variable.mob[Mob_enum.JOTARO][0]["y"]+=movement_y
 
-            if mob[Mob_enum.JOTARO][0]["x"] > 200:
-                mob[Mob_enum.JOTARO][0]["x"] = 200
+            if global_variable.mob[Mob_enum.JOTARO][0]["x"] > 200:
+                global_variable.mob[Mob_enum.JOTARO][0]["x"] = 200
                 tilemap_x += 1
-            if mob[Mob_enum.JOTARO][0]["y"] > 200:
-                mob[Mob_enum.JOTARO][0]["y"] = 200
+            if global_variable.mob[Mob_enum.JOTARO][0]["y"] > 200:
+                global_variable.mob[Mob_enum.JOTARO][0]["y"] = 200
                 tilemap_y += 1
 
         case Prog_state.FLIGHT_FIGHT:
@@ -86,14 +89,39 @@ def update():
                 movement_x = 1
 
             if pyxel.btn(pyxel.KEY_O):
-                global_variable.fight_mob[Mob_enum.PROJECTILE].append({"x":mob[Mob_enum.JOTARO][0]["x"], "y":mob[Mob_enum.JOTARO][0]["y"]})
+                global_variable.fight_mob[Mob_enum.PROJECTILE].append({"x":global_variable.fight_mob[Mob_enum.JOTARO][0]["x"], "y":global_variable.fight_mob[Mob_enum.JOTARO][0]["y"], "animation_start":0, "animation_index":0})
 
 
             global_variable.fight_mob[Mob_enum.JOTARO][0]["x"]+=movement_x
             global_variable.fight_mob[Mob_enum.JOTARO][0]["y"]+=movement_y
 
-            for i in global_variable.fight_mob[Mob_enum.PROJECTILE]:
-                i["x"]+=1
+            i:int = 0
+            while i<len(global_variable.fight_mob[Mob_enum.PROJECTILE]):
+                global_variable.fight_mob[Mob_enum.PROJECTILE][i]["x"]+=1
+                if(global_variable.fight_mob[Mob_enum.PROJECTILE][i]["x"] > 256):
+                    global_variable.fight_mob[Mob_enum.PROJECTILE][i] = global_variable.fight_mob[Mob_enum.PROJECTILE][len(global_variable.fight_mob[Mob_enum.PROJECTILE])-1]
+                    global_variable.fight_mob[Mob_enum.PROJECTILE].remove(global_variable.fight_mob[Mob_enum.PROJECTILE][len(global_variable.fight_mob[Mob_enum.PROJECTILE])-1])
+                    i-=1
+                i+=1
+
+        case Prog_state.KARAOKE:
+            if pyxel.btnp(translate_char(global_variable.karaoke_string[global_variable.karaoke_index])):
+                global_variable.karaoke_index += 1
+                global_variable.karaoke_pose = global_variable.karaoke_pose ^ 1
+
+            if global_variable.draw_loop_count%30 == 0:
+                global_variable.enemy_karaoke_index += 1
+                global_variable.enemy_karaoke_pose = global_variable.enemy_karaoke_pose ^ 1
+
+            if global_variable.karaoke_index == len(global_variable.karaoke_string):
+                global_variable.state = Prog_state.IN_GAME
+                talk(global_variable.mob[global_variable.talking_png["i"]][global_variable.talking_png["j"]])
+                mod_arg = True
+
+            if global_variable.enemy_karaoke_index == len(global_variable.karaoke_string):
+                global_variable.state = Prog_state.GAME_OVER
+
+    global_variable.draw_loop_count+=1
 
 
 
@@ -105,21 +133,29 @@ def draw():
     match global_variable.state:
         case Prog_state.END:
             running = False
+
         case Prog_state.UI:
             state = render_ui(global_variable.ui_dict[0])
+
         case Prog_state.GAME_OVER:
             return
+
         case Prog_state.IN_GAME:
-            for i in range(len(mob)):
-                for j in range(len(mob[i])):
-                    draw_mob(mob[i][j], i)
+            for i in range(len(global_variable.mob)):
+                for j in range(len(global_variable.mob[i])):
+                    draw_mob(global_variable.mob[i][j], i)
+
         case Prog_state.FLIGHT_FIGHT:
-            print(global_variable.fight_mob)
+            pyxel.cls(1)
             for i in range(len(global_variable.fight_mob)):
-                print(i)
                 for j in range(len(global_variable.fight_mob[i])):
-                    print("   ",j)
                     draw_mob(global_variable.fight_mob[i][j], i)
 
+        case Prog_state.KARAOKE:
+            pyxel.cls(1)
+            pyxel.blt(10, 20, 2, global_variable.karaoke_pose*50, 50, 50, 50)
+            pyxel.blt(150, 20, 2, global_variable.enemy_karaoke_pose*50, 50, 50, 50)
+            pyxel.text(10, 80, global_variable.karaoke_string[global_variable.karaoke_index].upper(), 0)
+            pyxel.text(140, 80, global_variable.karaoke_string[global_variable.enemy_karaoke_index].upper(), 0)
+
 pyxel.run(update, draw)
-print(global_variable.draw_loop_count)

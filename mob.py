@@ -11,6 +11,7 @@ class Mob_enum(IntEnum):
 
 class Answer_action(IntEnum):
     FLIGHT_FIGHT = -1
+    KARAOKE = -2
 
 def create_mob(x:int, y:int, w:int, h:int)->dict:
     return {
@@ -26,7 +27,6 @@ def draw_mob(mob:dict, mob_type:Mob_enum)->None:
     w:int = 0
     h:int = 0
 
-    print(mob["animation_start"])
     animation_image:int = (global_variable.draw_loop_count - mob["animation_start"]) % global_variable.mob_attrib[mob_type]["animation"][mob["animation_index"]]["image_count"]
 
     for i in range(len(global_variable.mob_attrib[mob_type]["animation"][mob["animation_index"]]["v"])):
@@ -62,6 +62,10 @@ def talk(mob):
                 case Answer_action.FLIGHT_FIGHT:
                     global_variable.mod_arg = 0
                     return Prog_state.FLIGHT_FIGHT
+
+                case Answer_action.KARAOKE:
+                    global_variable.mod_arg = 0
+                    return Prog_state.KARAOKE
 
         i = mob["answer_action"][i][ui["selected"]]
     return Prog_state.IN_GAME
