@@ -3,6 +3,7 @@ import pyxel
 import global_variable
 from prog_type import *
 from ui import *
+from 
 
 class Mob_enum(IntEnum):
     JOTARO = 0
@@ -19,7 +20,7 @@ def create_mob(x:int, y:int, w:int, h:int)->dict:
     return {
         "x":x,
         "y":y,
-        "animation_index":0,
+        "animation_index":1,
         "animation_start":0
     }
 
@@ -62,13 +63,12 @@ def talk(mob, dialogue_index):
             pyxel.flip()
         pyxel.flip()
         if mob["answer_action"][i][ui["selected"]] < 0:
+            global_variable.mod_arg = mob["action_arg"][i][ui["selected"]]
             match mob["answer_action"][i][ui["selected"]]:
                 case Answer_action.FLIGHT_FIGHT:
-                    global_variable.mod_arg = 0
                     return Prog_state.FLIGHT_FIGHT
 
                 case Answer_action.KARAOKE:
-                    global_variable.mod_arg = 0
                     return Prog_state.KARAOKE
 
         i = mob["answer_action"][i][ui["selected"]]

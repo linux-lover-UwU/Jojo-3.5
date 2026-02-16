@@ -18,6 +18,11 @@ talking_png = {"i":0, "j":0}
 mob = None
 karaoke_return = None
 life = 20
+position_3d = [0.0, 0.0]
+camera_rotation = [0.0, 0.0]
+tilemap_x:int = 0
+tilemap_y:int = 0
+
 
 def update_global_variable():
     global fight_mob

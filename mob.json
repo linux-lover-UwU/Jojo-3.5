@@ -1,0 +1,18 @@
+[
+        [
+                {
+                        "x":0,
+                        "y":0,
+                        "animation_index":0,
+                        "animation_start":0
+                }
+        ],
+        [
+                {
+                        "x":50,
+                        "y":50,
+                        "animation_index":0,
+                        "animation_start":0
+                }
+        ]
+]
