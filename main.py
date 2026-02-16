@@ -38,17 +38,8 @@ with open("save.csv", "r") as file:
     global_variable.tilemap_x = int(save_list[1][0])
     global_variable.tilemap_y = int(save_list[2][0])
 
-[[create_mob(0,0,50,50)],[{
-        "x":100,
-        "y":100,
-        "animation_index":0,
-        "animation_start":0,
-        "text":["hello","I ame mario"],
-        "name":"mario",
-        "answer":[["hello","non","hellololo"],["hellla"]],
-        "answer_action":[[Answer_action.KARAOKE,0,1],[0]],
-    "action_arg":[[1,0,0],[0]]
-    }]]
+    global_variable.mob[Mob_enum.JOTARO][0]["x"] = int(save_list[1][1])
+    global_variable.mob[Mob_enum.JOTARO][0]["y"] = int(save_list[2][1])
 
 running:bool = True
 def update():
@@ -88,6 +79,15 @@ def update():
             if global_variable.mob[Mob_enum.JOTARO][0]["y"] > 200:
                 global_variable.mob[Mob_enum.JOTARO][0]["y"] = 200
                 global_variable.tilemap_y += 1
+
+            if pyxel.pget(global_variable.mob[Mob_enum.JOTARO][0]["x"]-1, global_variable.mob[Mob_enum.JOTARO][0]["y"])==4 or pyxel.pget(global_variable.mob[Mob_enum.JOTARO][0]["x"]-1, global_variable.mob[Mob_enum.JOTARO][0]["y"]+16)==4:
+                global_variable.mob[Mob_enum.JOTARO][0]["x"] += 1
+            if pyxel.pget(global_variable.mob[Mob_enum.JOTARO][0]["x"]+9, global_variable.mob[Mob_enum.JOTARO][0]["y"])==4 or pyxel.pget(global_variable.mob[Mob_enum.JOTARO][0]["x"]+9, global_variable.mob[Mob_enum.JOTARO][0]["y"]+16)==4:
+                global_variable.mob[Mob_enum.JOTARO][0]["x"] -= 1
+            if pyxel.pget(global_variable.mob[Mob_enum.JOTARO][0]["x"], global_variable.mob[Mob_enum.JOTARO][0]["y"]-1)==4 or pyxel.pget(global_variable.mob[Mob_enum.JOTARO][0]["x"]+8, global_variable.mob[Mob_enum.JOTARO][0]["y"]-1)==4:
+                global_variable.mob[Mob_enum.JOTARO][0]["y"] += 1
+            if pyxel.pget(global_variable.mob[Mob_enum.JOTARO][0]["x"], global_variable.mob[Mob_enum.JOTARO][0]["y"]+17)==4 or pyxel.pget(global_variable.mob[Mob_enum.JOTARO][0]["x"]+8, global_variable.mob[Mob_enum.JOTARO][0]["y"]+17)==4:
+                global_variable.mob[Mob_enum.JOTARO][0]["y"] -= 1
 
         case Prog_state.FLIGHT_FIGHT:
             if pyxel.btn(pyxel.KEY_Z):

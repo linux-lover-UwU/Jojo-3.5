@@ -3,7 +3,7 @@ import pyxel
 import global_variable
 from prog_type import *
 from ui import *
-from 
+from inventaire import *
 
 class Mob_enum(IntEnum):
     JOTARO = 0
