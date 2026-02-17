@@ -7,12 +7,98 @@
                         "animation_start":0
                 }
         ],
+        [ 
+                {
+                        "x":400,
+                        "y":160,
+                        "animation_index":0,
+                        "animation_start":0,
+                        "text":["Depuis que l'ours Juan 6 et 7 font 13 a pris le pourvoire \nC'est devenue un pay rasist"],
+                        "name":"luigi",
+                        "answer":[["67", "Abattre le pinguin sans aucun raison valable","Adieu"]],
+                        "answer_action":[[-3,-3,-3]],
+                        "action_arg":[[0,-1,0]]
+                },
+                {
+                        "x":376,
+                        "y":112,
+                        "animation_index":0,
+                        "animation_start":0,
+                        "text":["pour passe il faut m'affronte", "bien joue tu ma eu tu peut passer"],
+                        "name":"Pablo",
+                        "answer":[["Alle", "non c bon"], ["merci"]],
+                        "answer_action":[[-2,-3],[-3]],
+                        "action_arg":[[0,0],[-1]]
+                },
+                {
+                        "x":376,
+                        "y":64,
+                        "animation_index":0,
+                        "animation_start":0,
+                        "text":["Tu ferai un grand chanteur\nPrend ces 5 piece sale pauvre", "Par maintenan"],
+                        "name":"Wilson",
+                        "answer":[["Vz donne"], ["merci"]],
+                        "answer_action":[[-6],[-3]],
+                        "action_arg":[[{"item":"piece", "count":5, "next":1}],[-1]]
+                },
+                {
+                        "x":376,
+                        "y":256,
+                        "animation_index":0,
+                        "animation_start":0,
+                        "text":["pour passe il faut m'affronte", "bien joue tu ma eu tu peut passer"],
+                        "name":"Donne corleone",
+                        "answer":[["Alle", "non c bon"],["merci"]],
+                        "answer_action":[[-2,-3],[-3]],
+                        "action_arg":[[1,0],[-1]]
+                },
+                {
+                        "x":376,
+                        "y":304,
+                        "animation_index":0,
+                        "animation_start":0,
+                        "text":["Si tu a reussi a arrive jusqu'ici\nc que tu n'est pas si mauvais\ntient prend ces 3 glacon", "Par vaincre le roi"],
+                        "name":"Vito",
+                        "answer":[["merci"],["Entendu"]],
+                        "answer_action":[[-6],[-3]],
+                        "action_arg":[[{"item":"ice", "count":3, "next":1}],[0]]
+                }
+        ],
         [
                 {
-                        "x":50,
-                        "y":50,
+                        "x":296,
+                        "y":176,
                         "animation_index":0,
-                        "animation_start":0
+                        "animation_start":0,
+                        "text":["Bienvenu a la Banquise\nsi vous n'avez pas de visa rentre chez vous.", "feur", "Ah je meur"],
+                        "name":"Ursule",
+                        "answer":[["Pourquoi ?", "Viens te battre", "a la prochaine"],["..."],["Haha cette extremiste le meritai"]],
+                        "answer_action":[[1,-1,-3],[-3],[-3]],
+                        "action_arg":[[0,0,0],[0],[-1]]
+
+
+                },
+                {
+                        "x":448,
+                        "y":176,
+                        "animation_index":0,
+                        "animation_start":0,
+                        "text":["Tu na pas le droit d'entree\nJe suis le garde le moins corrumpu du monde", "Merci ca fait plaisir mais je reste  fidel\na mon roi", "ah je meurt de frois"],
+                        "name":"Benjamin",
+                        "answer":[["donne 5 piece au garde", "Nannnnnnnnnnn"],["Geler le garde avec 3 glacon", "je vien de perdre tout mes economie"],["cool"]],
+                        "answer_action":[[-5,-3],[-5,-3],[-3]],
+                        "action_arg":[[{"item":"piece","count":5,"check":1,"not_check":0},0],[{"item":"ice","count":3,"check":2,"not_check":0},0],[-1]]
+                },
+                {
+                        "x":576,
+                        "y":176,
+                        "animation_index":0,
+                        "animation_start":0,
+                        "name":"Juan 6 et 7 fon 13",
+                        "text":["Pas de blabla affronton nous", "Ah je meurt"],
+                        "answer":[["Ok"],["Ok"]],
+                        "answer_action":[[-1], [-3]],
+                        "action_arg":[[1],[-1]]
                 }
         ]
 ]

@@ -38,5 +38,33 @@
                 "background":8,
                 "over":0
 
+        },
+        {
+                "button":
+                [
+                        {
+                                "x":100,
+                                "y":50,
+                                "text":"made by"
+                        },
+                        {
+                                "x":100,
+                                "y":60,
+                                "text":"Juan"
+                        },
+                        {
+                                "x":100,
+                                "y":66,
+                                "text":"karish"
+                        },
+                        {
+                                "x":100,
+                                "y":72,
+                                "text":"Yoann"
+                        }
+                ],
+                "selected":0,
+                "background":0,
+                "over":0
         }
 ]

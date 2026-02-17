@@ -27,7 +27,8 @@ La fonction prend en parametre un str item t un int item_nombre
 La fonction ajoute item_nombre a global_variable.inventory[item] ou cree un item de item_nombre
 """
 def ajouter_inventaire(item:str, item_nombre:int):
-    if item not in global_variable.inventory[item]:
+    global global_variable
+    if item not in global_variable.inventory:
         global_variable.inventory[item] = item_nombre
     else:
         global_variable.inventory[item] = global_variable.inventory[item] < item_nombre

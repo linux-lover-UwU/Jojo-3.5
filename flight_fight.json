@@ -1,11 +1,28 @@
-[
-        {
-                "mob":[
+{
+        "mob":[
+                [
+                        [],
+                        [],
+                        [],
                         [{"x":50,"y":50,"animation_start":0,"animation_index":0}],
                         [],
                         [],
                         [],
-                        [{"x":100,"y":50,"animation_start":0,"animation_index":0}]
+                        [{"x":220,"y":100,"animation_start":0,"animation_index":0, "direction":1}]
+                ],
+                [
+                        [],
+                        [],
+                        [],
+                        [{"x":50,"y":50,"animation_start":0,"animation_index":0}],
+                        [],
+                        [],
+                        [],
+                        [],
+                        [],
+                        [],
+                        [{"x":220,"y":100,"animation_start":0,"animation_index":0, "direction":1}]
                 ]
-        }
-]
+        ],
+        "dialogue_index":[2,1]
+}

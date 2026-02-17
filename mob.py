@@ -8,13 +8,20 @@ from inventaire import *
 class Mob_enum(IntEnum):
     JOTARO = 0
     PENGUIN = 1
-    BAD_PROJECTILE = 2
-    PROJECTILE = 3
-    BAD_GUY = 4
+    BEAR = 2
+    JOTARO_FLIGHT = 3
+    BAD_PROJECTILE = 4
+    PROJECTILE = 5
+    BAD_GUY_1 = 6
+    BAD_GUY_2 = 7
 
 class Answer_action(IntEnum):
     FLIGHT_FIGHT = -1
     KARAOKE = -2
+    END = -3
+    DEAD = -4
+    CHECK_INVENTORY = -5
+    ADD_INVENTORY = -6
 
 def create_mob(x:int, y:int, w:int, h:int)->dict:
     return {
@@ -67,9 +74,19 @@ def talk(mob, dialogue_index):
             match mob["answer_action"][i][ui["selected"]]:
                 case Answer_action.FLIGHT_FIGHT:
                     return Prog_state.FLIGHT_FIGHT
-
                 case Answer_action.KARAOKE:
                     return Prog_state.KARAOKE
+                case Answer_action.END:
+                    return Prog_state.IN_GAME
+                case Answer_action.CHECK_INVENTORY:
+                    if check_inventaire(mob["action_arg"][i][ui["selected"]]["item"], mob["action_arg"][i][ui["selected"]]["count"]):
+                        i = mob["action_arg"][i][ui["selected"]]["check"]
+                    else:
+                        i = mob["action_arg"][i][ui["selected"]]["not_check"]
 
-        i = mob["answer_action"][i][ui["selected"]]
+                case Answer_action.ADD_INVENTORY:
+                    ajouter_inventaire(mob["action_arg"][i][ui["selected"]]["item"], mob["action_arg"][i][ui["selected"]]["count"])
+                    i = mob["action_arg"][i][ui["selected"]]["next"]
+        else:
+            i = mob["answer_action"][i][ui["selected"]]
     return Prog_state.IN_GAME
